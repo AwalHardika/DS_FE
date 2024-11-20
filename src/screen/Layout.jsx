@@ -1,8 +1,12 @@
+import { useQuery } from '@tanstack/react-query'
 import { Menu } from 'antd'
-import React from 'react'
+import React, { useState } from 'react'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
+import ax from '../utils/ax'
 
 const Layout = () => {
+
+    const [email, setEmail] = useState(null)
 
     const items = [
         {
@@ -24,6 +28,39 @@ const Layout = () => {
         }
     ]
 
+    const h_items = [
+        {
+            label : email ? email : "Unknown@gmail.com",
+            children : [
+                {
+                    label : "Profile",
+                    key : "/profile"
+                },
+                {
+                    label : "Logout",
+                    onClick : ()=>{
+                        localStorage.removeItem("token")
+                        navigate("/")
+                        window.location.reload()
+                    }
+                }
+            ]
+        }
+    ]
+
+    const {data, isLoading, error} = useQuery({
+        queryKey : ["getEmail"],
+        queryFn : async ()=>{
+            try {
+                const response = await ax.get("/profile")
+                setEmail(response.data.email)
+                return response.data
+            } catch (error) {
+                console.log(error)
+            }
+        }
+    })
+
 
     const navigate = useNavigate()
     const location = useLocation()
@@ -35,12 +72,19 @@ const Layout = () => {
             items={items}
             selectedKeys={[location.pathname]}
             onClick={(e)=>navigate(e.key)}
+            
             />
         </div>
 
         {/* right content */}
 
-        <div className='flex flex-1'>
+        <div className='w-full flex flex-col flex-1'>
+            <Menu 
+            items={h_items}
+            onClick={(e)=>navigate(e.key)}
+            className='w-full flex justify-end'
+            mode='horizontal'
+            />
             <Outlet/>
         </div>
     </main>
