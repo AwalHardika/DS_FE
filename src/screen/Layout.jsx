@@ -17,15 +17,6 @@ const Layout = () => {
             key : "/product",
             label : "Product"
         },
-        {
-            key : "/logout",
-            label : "Logout",
-            onClick : ()=>{
-                localStorage.removeItem("token")
-                navigate("/")
-                window.location.reload()
-            }
-        }
     ]
 
     const h_items = [

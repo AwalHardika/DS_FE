@@ -5,6 +5,8 @@ import Register from './auth/Register'
 import Layout from './screen/Layout'
 import DashboardScreen from './screen/dashboard/DashboardScreen'
 import ProductScreen from './screen/product/ProductScreen'
+import Profile from './screen/profile/Profile'
+import EditProfile from './screen/profile/EditProfile'
 
 const App = () => {
   const [isLogin, setIsLogin] = useState(false)
@@ -35,6 +37,8 @@ const App = () => {
       <Route path='/' element={<Layout/>}>
         <Route index element={<DashboardScreen/>} />
         <Route path='/product'element={<ProductScreen/>} />
+        <Route path='/profile' element={<Profile/>}/>
+        <Route path='/profile/edit' element={<EditProfile/>}/>
       </Route>
     </Routes>
   )
