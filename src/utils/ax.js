@@ -26,7 +26,7 @@ ax.interceptors.response.use(function (response) {
   console.log(error.response)
 
   if (error.response.status === 403) {
-    if (error.response.data = "TokenExpiredError") {
+    if (error.response.data === "TokenExpiredError") {
       localStorage.removeItem("token")
       window.location.href = "/"
     }
