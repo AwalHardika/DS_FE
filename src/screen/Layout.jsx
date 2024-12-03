@@ -1,8 +1,9 @@
 import { useQuery } from '@tanstack/react-query'
-import { Menu } from 'antd'
+import { Avatar, Menu } from 'antd'
 import React, { useState } from 'react'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import ax from '../utils/ax'
+import getProfile from '../api/profile/getProfile'
 
 const Layout = () => {
 
@@ -18,10 +19,25 @@ const Layout = () => {
             label : "Product"
         },
     ]
+    const {data : Profil} = useQuery({
+      queryKey : ["getProfile"],  
+      queryFn : getProfile
+    })
 
+    
     const h_items = [
         {
-            label : email ? email : "Unknown@gmail.com",
+            label : (
+                Profil?.imageProfile ? (
+                    <div className='flex gap-2 items-center'>
+                    <Avatar src={`http://localhost:3000/profile/${Profil?.imageProfile}`} />
+                    <h1>{Profil?.email}</h1>
+                    </div>
+                    
+                ) : (
+                    <Avatar>U</Avatar> // Avatar default
+                )
+            ),
             children : [
                 {
                     label : "Profile",
@@ -38,21 +54,6 @@ const Layout = () => {
             ]
         }
     ]
-
-    const {data, isLoading, error} = useQuery({
-        queryKey : ["getEmail"],
-        queryFn : async ()=>{
-            try {
-                const response = await ax.get("/profile")
-                setEmail(response.data.email)
-                return response.data
-            } catch (error) {
-                console.log(error)
-            }
-        }
-    })
-
-
     const navigate = useNavigate()
     const location = useLocation()
   return (
