@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Button, Image, Table } from "antd";
 import React, { useState } from "react";
 import ax from "../../utils/ax";
@@ -69,11 +69,39 @@ const ProductScreen = () => {
       title: "Action",
     },
   ];
-  console.log(selectedRowKeys);
+
+  const queryClient = useQueryClient()
+  
+  const deleteMany = useMutation({
+    mutationFn: async (ids) => {
+      const result = await ax.delete("/product/delete", {
+        data : {
+          ids
+        }
+      });
+      return result;
+    },
+    onSuccess: (res) => {
+      refetch()
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
+
+  function handleMultipleDelete() {
+    deleteMany.mutate(selectedRowKeys)
+  }
+
   return (
     <div>
       <div className="mt-4">
-        <NavLink to={"/product/add"}><Button>Add Data</Button></NavLink>
+        <Button danger type="primary" onClick={handleMultipleDelete}>
+          Delete
+        </Button>
+        <NavLink to={"/product/add"} className={"ml-auto"}>
+          <Button>Add Data</Button>
+        </NavLink>
         <Table
           columns={column}
           rowSelection={rowSelection}

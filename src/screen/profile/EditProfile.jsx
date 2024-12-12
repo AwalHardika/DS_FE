@@ -17,7 +17,6 @@ const EditProfile = () => {
       }
     })
     
-    if(isLoading) return <p>Loading...</p>
 
     let previewImage = imageBase64 ? imageBase64 : `http://localhost:3000/profile/${data?.imageProfile}?t=${Date.now()}`
 

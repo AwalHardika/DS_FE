@@ -35,7 +35,7 @@ const Layout = () => {
                     </div>
                     
                 ) : (
-                    <Avatar>U</Avatar> // Avatar default
+                    <Avatar>U</Avatar> 
                 )
             ),
             children : [
@@ -59,7 +59,7 @@ const Layout = () => {
   return (
     <main className='w-screnn min-h-screen flex'>
         {/* left sidebar  */}
-        <div className='w-[200px] h-screen'>
+        <div className='w-[200px] h-screen fixed left-0 top-0'>
             <Menu 
             items={items}
             selectedKeys={[location.pathname]}
@@ -70,7 +70,7 @@ const Layout = () => {
 
         {/* right content */}
 
-        <div className='w-full flex flex-col flex-1'>
+        <div className='w-full flex flex-col ml-[200px] flex-1'>
             <Menu 
             items={h_items}
             onClick={(e)=>navigate(e.key)}
